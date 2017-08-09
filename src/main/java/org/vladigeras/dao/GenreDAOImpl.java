@@ -1,0 +1,112 @@
+package org.vladigeras.dao;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.vladigeras.model.GenreEntity;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
+import java.util.List;
+
+@Repository
+public class GenreDAOImpl implements GenreDAO {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public GenreDAOImpl() {
+    }
+
+    @Override
+    @Transactional
+    public List<GenreEntity> getAllGenres() {
+        List<GenreEntity> result = null;
+
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Transaction tx = session.beginTransaction();
+            EntityManager entityManager = sessionFactory.createEntityManager();
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<GenreEntity> criteria = builder.createQuery(GenreEntity.class);
+            Root<GenreEntity> root = criteria.from(GenreEntity.class);
+            criteria.select(root);
+            result = entityManager.createQuery(criteria).getResultList();
+            tx.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return result;
+    }
+
+    private GenreEntity findByTitle(String title) {
+        GenreEntity result = null;
+
+        EntityManager entityManager = sessionFactory.createEntityManager();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<GenreEntity> criteria = builder.createQuery(GenreEntity.class);
+        Root<GenreEntity> root = criteria.from(GenreEntity.class);
+        criteria.select(root);
+        criteria.where(builder.equal(root.get("title"), title));
+        List<GenreEntity> genres = entityManager.createQuery(criteria).getResultList();
+
+        if(genres != null) {
+            if (genres.size() == 1) {
+                result = genres.get(0);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public boolean save(String title) {     /* If not find entity with this title, then save new entity */
+        Session session = sessionFactory.getCurrentSession();
+        boolean successful = false;
+        try {
+            Transaction tx = session.beginTransaction();
+            GenreEntity genre = findByTitle(title);
+            if (genre == null) { //not find - save new
+                genre = new GenreEntity(title);
+                session.save(genre);
+                tx.commit();
+                successful = true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return successful;
+    }
+
+    @Override
+    @Transactional
+    public boolean delete(String title) {   /* If find entity with this title, then delete her */
+        Session session = sessionFactory.getCurrentSession();
+        boolean successful = false;
+        try {
+            Transaction tx = session.beginTransaction();
+            GenreEntity genre = findByTitle(title);
+            if (genre != null) { //find - delete
+                session.delete(genre);
+                tx.commit();
+                successful = true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return successful;
+    }
+}

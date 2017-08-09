@@ -1,11 +1,15 @@
-package org.vladigeras.entity;
+package org.vladigeras.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
 @Table(name = "Genre", schema = "OnlineLibrary")
-public class GenreEntity {
+public class GenreEntity implements Serializable{
+
+    private static final long serialVersionUID = 554804983820894327L;
+
     private long id;
     private String title;
     private Collection<BookGenreEntity> bookGenresById;

@@ -1,12 +1,16 @@
-package org.vladigeras.entity;
+package org.vladigeras.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
 @Entity
 @Table(name = "Book", schema = "OnlineLibrary")
-public class BookEntity {
+public class BookEntity implements Serializable{
+
+    private static final long serialVersionUID = 2172630279431039165L;
+
     private long id;
     private String title;
     private Integer year;

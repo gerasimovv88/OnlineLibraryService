@@ -1,22 +1,24 @@
-package org.vladigeras.entity;
+package org.vladigeras.model;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Book_Author", schema = "OnlineLibrary")
-public class BookAuthorEntity {
+@Table(name = "Book_Genre", schema = "OnlineLibrary")
+public class BookGenreEntity {
+
     private long id;
     private long bookId;
-    private long authorId;
+    private long genreId;
     private BookEntity bookByBookId;
-    private AuthorEntity authorByAuthorId;
+    private GenreEntity genreByGenreId;
 
-    public BookAuthorEntity() {
+    public  BookGenreEntity() {
+
     }
 
-    public BookAuthorEntity(long bookId, long authorId) {
+    public BookGenreEntity(long bookId, long genreId) {
         this.bookId = bookId;
-        this.authorId = authorId;
+        this.genreId = genreId;
     }
 
     @Id
@@ -41,13 +43,13 @@ public class BookAuthorEntity {
     }
 
     @Basic
-    @Column(name = "author_id")
-    public long getAuthorId() {
-        return authorId;
+    @Column(name = "genre_id")
+    public long getGenreId() {
+        return genreId;
     }
 
-    public void setAuthorId(long authorId) {
-        this.authorId = authorId;
+    public void setGenreId(long genreId) {
+        this.genreId = genreId;
     }
 
     @Override
@@ -55,11 +57,11 @@ public class BookAuthorEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BookAuthorEntity that = (BookAuthorEntity) o;
+        BookGenreEntity that = (BookGenreEntity) o;
 
         if (id != that.id) return false;
         if (bookId != that.bookId) return false;
-        if (authorId != that.authorId) return false;
+        if (genreId != that.genreId) return false;
 
         return true;
     }
@@ -68,12 +70,12 @@ public class BookAuthorEntity {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (int) (bookId ^ (bookId >>> 32));
-        result = 31 * result + (int) (authorId ^ (authorId >>> 32));
+        result = 31 * result + (int) (genreId ^ (genreId >>> 32));
         return result;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "book_id", referencedColumnName = "id", insertable = false, updatable = false)
     public BookEntity getBookByBookId() {
         return bookByBookId;
     }
@@ -82,13 +84,13 @@ public class BookAuthorEntity {
         this.bookByBookId = bookByBookId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    public AuthorEntity getAuthorByAuthorId() {
-        return authorByAuthorId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "genre_id", referencedColumnName = "id", insertable = false, updatable = false)
+    public GenreEntity getGenreByGenreId() {
+        return genreByGenreId;
     }
 
-    public void setAuthorByAuthorId(AuthorEntity authorByAuthorId) {
-        this.authorByAuthorId = authorByAuthorId;
+    public void setGenreByGenreId(GenreEntity genreByGenreId) {
+        this.genreByGenreId = genreByGenreId;
     }
 }

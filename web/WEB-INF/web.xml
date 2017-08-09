@@ -5,7 +5,7 @@
          version="3.1">
 
     <context-param>
-        <param-name>contextConfigLocation</param-name>
+        <param-name>dispatcherServlet</param-name>
         <param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
     </context-param>
     <servlet>
