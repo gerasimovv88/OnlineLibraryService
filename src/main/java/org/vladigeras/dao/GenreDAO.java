@@ -7,4 +7,5 @@ public interface GenreDAO {
     public List<GenreEntity> getAllGenres();
     public boolean save(String title);
     public boolean delete(String title);
+    public boolean update(String oldTitle, String newTitle);
 }

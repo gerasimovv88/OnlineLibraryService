@@ -32,4 +32,9 @@ public class GenreServiceImpl implements GenreService {
     public boolean delete(String title) {
         return genreDAO.delete(title);
     }
+
+    @Override
+    public boolean update(String oldTitle, String newTitle) {
+        return genreDAO.update(oldTitle, newTitle);
+    }
 }

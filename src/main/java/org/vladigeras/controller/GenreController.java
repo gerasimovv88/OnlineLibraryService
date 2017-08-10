@@ -19,7 +19,7 @@ public class GenreController {
     @Autowired
     private GenreService genreService;
 
-    private static final Pattern titlePattern = Pattern.compile("[а-яёА-ЯЁ]+");
+    private static final Pattern titlePattern = Pattern.compile("[а-яёА-ЯЁ\\s]+");  //Russian literal + space
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<GenreEntity> getAllGenres() {
@@ -30,20 +30,18 @@ public class GenreController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public boolean save(@RequestParam(name = "title", required = true) String title) {
-        if(isValidTitle(title)) {
-            return genreService.save(title);
-        } else {
-            return false;
-        }
+        return isValidTitle(title) && genreService.save(title);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public boolean delete(@RequestParam(name = "title", required = true) String title) {
-        if (isValidTitle(title)) {
-            return genreService.delete(title);
-        } else {
-            return false;
-        }
+        return isValidTitle(title) && genreService.delete(title);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public boolean delete(@RequestParam(name = "oldTitle", required = true) String oldTitle,
+                          @RequestParam(name = "newTitle", required = true) String newTitle) {
+        return isValidTitle(oldTitle) && isValidTitle(newTitle) && genreService.update(oldTitle, newTitle);
     }
 
     private boolean isValidTitle(String title) {

@@ -107,4 +107,27 @@ public class GenreDAOImpl implements GenreDAO {
         }
         return successful;
     }
+
+    @Override
+    @Transactional
+    public boolean update(String oldTitle, String newTitle) {
+        Session session = sessionFactory.getCurrentSession();
+        boolean successful = false;
+        try {
+            Transaction tx = session.beginTransaction();
+            GenreEntity genre = findByTitle(oldTitle, session); /* If find entity with this title, then replace it */
+            if (genre != null) { //find - replace
+                genre.setTitle(newTitle);
+                session.update(genre);
+                tx.commit();
+                successful = true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return successful;
+    }
 }
