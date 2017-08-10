@@ -104,7 +104,8 @@ public class AuthorEntity implements Serializable{
         return result;
     }
 
-    @OneToMany(mappedBy = "authorByAuthorId")
+    @Transient
+    @OneToMany(mappedBy = "authorByAuthorId", fetch = FetchType.LAZY)
     public Collection<BookAuthorEntity> getBookAuthorsById() {
         return bookAuthorsById;
     }

@@ -74,7 +74,8 @@ public class BookGenreEntity {
         return result;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Transient
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", referencedColumnName = "id", insertable = false, updatable = false)
     public BookEntity getBookByBookId() {
         return bookByBookId;
@@ -84,7 +85,8 @@ public class BookGenreEntity {
         this.bookByBookId = bookByBookId;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Transient
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id", referencedColumnName = "id", insertable = false, updatable = false)
     public GenreEntity getGenreByGenreId() {
         return genreByGenreId;

@@ -178,7 +178,8 @@ public class BookEntity implements Serializable{
         return result;
     }
 
-    @OneToMany(mappedBy = "bookByBookId")
+    @Transient
+    @OneToMany(mappedBy = "bookByBookId", fetch = FetchType.LAZY)
     public Collection<BookAuthorEntity> getBookAuthorsById() {
         return bookAuthorsById;
     }
@@ -187,7 +188,8 @@ public class BookEntity implements Serializable{
         this.bookAuthorsById = bookAuthorsById;
     }
 
-    @OneToMany(mappedBy = "bookByBookId")
+    @Transient
+    @OneToMany(mappedBy = "bookByBookId", fetch = FetchType.LAZY)
     public Collection<BookGenreEntity> getBookGenresById() {
         return bookGenresById;
     }

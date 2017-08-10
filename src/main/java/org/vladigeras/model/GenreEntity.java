@@ -63,7 +63,8 @@ public class GenreEntity implements Serializable{
         return result;
     }
 
-    @OneToMany(mappedBy = "genreByGenreId")
+    @Transient
+    @OneToMany(mappedBy = "genreByGenreId", fetch = FetchType.LAZY)
     public Collection<BookGenreEntity> getBookGenresById() {
         return bookGenresById;
     }

@@ -31,12 +31,11 @@ public class GenreDAOImpl implements GenreDAO {
         Session session = sessionFactory.getCurrentSession();
         try {
             Transaction tx = session.beginTransaction();
-            EntityManager entityManager = sessionFactory.createEntityManager();
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<GenreEntity> criteria = builder.createQuery(GenreEntity.class);
             Root<GenreEntity> root = criteria.from(GenreEntity.class);
             criteria.select(root);
-            result = entityManager.createQuery(criteria).getResultList();
+            result = session.createQuery(criteria).getResultList();
             tx.commit();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -47,16 +46,15 @@ public class GenreDAOImpl implements GenreDAO {
         return result;
     }
 
-    private GenreEntity findByTitle(String title) {
+    private GenreEntity findByTitle(String title, Session session) {
         GenreEntity result = null;
 
-        EntityManager entityManager = sessionFactory.createEntityManager();
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<GenreEntity> criteria = builder.createQuery(GenreEntity.class);
         Root<GenreEntity> root = criteria.from(GenreEntity.class);
         criteria.select(root);
         criteria.where(builder.equal(root.get("title"), title));
-        List<GenreEntity> genres = entityManager.createQuery(criteria).getResultList();
+        List<GenreEntity> genres = session.createQuery(criteria).getResultList();
 
         if(genres != null) {
             if (genres.size() == 1) {
@@ -74,7 +72,7 @@ public class GenreDAOImpl implements GenreDAO {
         boolean successful = false;
         try {
             Transaction tx = session.beginTransaction();
-            GenreEntity genre = findByTitle(title);
+            GenreEntity genre = findByTitle(title, session);
             if (genre == null) { //not find - save new
                 genre = new GenreEntity(title);
                 session.save(genre);
@@ -96,7 +94,7 @@ public class GenreDAOImpl implements GenreDAO {
         boolean successful = false;
         try {
             Transaction tx = session.beginTransaction();
-            GenreEntity genre = findByTitle(title);
+            GenreEntity genre = findByTitle(title, session);
             if (genre != null) { //find - delete
                 session.delete(genre);
                 tx.commit();

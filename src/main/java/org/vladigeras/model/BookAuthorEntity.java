@@ -1,7 +1,6 @@
 package org.vladigeras.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "Book_Author", schema = "OnlineLibrary")
@@ -74,8 +73,9 @@ public class BookAuthorEntity {
         return result;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @Transient
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", referencedColumnName = "id", insertable = false, updatable = false)
     public BookEntity getBookByBookId() {
         return bookByBookId;
     }
@@ -84,8 +84,9 @@ public class BookAuthorEntity {
         this.bookByBookId = bookByBookId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @Transient
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
     public AuthorEntity getAuthorByAuthorId() {
         return authorByAuthorId;
     }
