@@ -1,5 +1,7 @@
 package org.vladigeras.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -178,6 +180,7 @@ public class BookEntity implements Serializable{
         return result;
     }
 
+    @JsonIgnore
     @Transient
     @OneToMany(mappedBy = "bookByBookId", fetch = FetchType.LAZY)
     public Collection<BookAuthorEntity> getBookAuthorsById() {
@@ -188,6 +191,7 @@ public class BookEntity implements Serializable{
         this.bookAuthorsById = bookAuthorsById;
     }
 
+    @JsonIgnore
     @Transient
     @OneToMany(mappedBy = "bookByBookId", fetch = FetchType.LAZY)
     public Collection<BookGenreEntity> getBookGenresById() {
