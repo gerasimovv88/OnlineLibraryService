@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.vladigeras.controller.Util.ValueValidator;
+import org.vladigeras.util.ValidationPatterns;
+import org.vladigeras.util.ValueValidator;
 import org.vladigeras.model.AuthorEntity;
 import org.vladigeras.service.AuthorService;
 
@@ -19,7 +20,7 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
-    private static final Pattern authorPattern = Pattern.compile("[а-яёА-ЯЁ\\-]+");  //Russian literal + '-'
+    private static final Pattern authorPattern = Pattern.compile(ValidationPatterns.AUTHOR_PATTERN);
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<AuthorEntity> getAllAuthors() {

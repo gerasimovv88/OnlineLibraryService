@@ -16,10 +16,11 @@ import java.util.List;
 @Repository
 public class AuthorDAOImpl implements AuthorDAO{
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    public AuthorDAOImpl() {
+    @Autowired
+    public AuthorDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override

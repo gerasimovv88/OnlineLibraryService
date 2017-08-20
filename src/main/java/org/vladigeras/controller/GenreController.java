@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.vladigeras.controller.Util.ValueValidator;
+import org.vladigeras.util.ValidationPatterns;
+import org.vladigeras.util.ValueValidator;
 import org.vladigeras.model.GenreEntity;
 import org.vladigeras.service.GenreService;
 
@@ -20,7 +21,7 @@ public class GenreController {
     @Autowired
     private GenreService genreService;
 
-    private static final Pattern titlePattern = Pattern.compile("[а-яёА-ЯЁ\\s]+");  //Russian literal + space
+    private static final Pattern titlePattern = Pattern.compile(ValidationPatterns.GENRE_PATTERN);
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<GenreEntity> getAllGenres() {

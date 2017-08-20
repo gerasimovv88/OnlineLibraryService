@@ -17,10 +17,11 @@ import java.util.List;
 @Repository
 public class GenreDAOImpl implements GenreDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    public GenreDAOImpl() {
+    @Autowired
+    public GenreDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override

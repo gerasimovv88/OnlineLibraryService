@@ -1,4 +1,4 @@
-package org.vladigeras.controller.Util;
+package org.vladigeras.util;
 
 import java.util.ArrayList;
 import java.util.List;
