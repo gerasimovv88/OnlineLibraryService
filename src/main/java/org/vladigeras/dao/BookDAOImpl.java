@@ -3,13 +3,13 @@ package org.vladigeras.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.vladigeras.model.AuthorEntity;
 import org.vladigeras.model.BookEntity;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class BookDAOImpl implements BookDAO {
@@ -22,52 +22,46 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
-    @Transactional
     public boolean delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         boolean successful = false;
         try {
-            Transaction tx = session.beginTransaction();
             BookEntity book = session.get(BookEntity.class, id);
             if (book != null) { //if find - then delete
                 session.delete(book);
-                tx.commit();
                 successful = true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            session.close();
         }
-
         return successful;
     }
 
-//    @Override
-//    @Transactional
-//    public boolean save(BookEntity book) {
-//        Session session = sessionFactory.getCurrentSession();
-//        boolean successful = false;
-//        try {
-//            Transaction tx = session.beginTransaction();
-//            BookEntity bookEntity = findByAuthorAndTitle(book.getBookAuthorsById(), book.getTitle());
-//            if (bookEntity == null) { //if not find - then save new
-//                session.save(book);
-//                tx.commit();
-//                successful = true;
-//            }
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            session.close();
-//        }
-//
-//        return successful;
-//    }
-//
-//    @Transactional
-//    private BookEntity findByAuthorIdAndTitle (Long authorId, String string) {
-//
-//    }
+    @Override
+    public List search(String title, String author, String genre) {
+        List result = new ArrayList();
+
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Query query = session.createQuery("SELECT BookEntity.id, BookEntity.title, BookEntity.image, BookEntity.");
+            List results = query.list();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public BookEntity getBookById(Long id) {
+        BookEntity result = null;
+
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            result = session.get(BookEntity.class, id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
 }

@@ -1,21 +1,19 @@
 package org.vladigeras.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
 @Table(name = "Author", schema = "OnlineLibrary")
-public class AuthorEntity implements Serializable{
-
-    private static final long serialVersionUID = 591850205195656221L;
-
+public class AuthorEntity {
     private long id;
     private String firstname;
     private String middlename;
     private String lastname;
     private String fio;
-    private Collection<BookAuthorEntity> bookAuthorsById;
+    private Collection<BookEntity> bookEntityCollection;
 
     public AuthorEntity() {
     }
@@ -28,7 +26,6 @@ public class AuthorEntity implements Serializable{
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     public long getId() {
         return id;
@@ -94,6 +91,19 @@ public class AuthorEntity implements Serializable{
         return true;
     }
 
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "Book_Author",
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    public Collection<BookEntity> getBookEntityCollection() {
+        return bookEntityCollection;
+    }
+
+    public void setBookEntityCollection(Collection<BookEntity> bookEntityCollection) {
+        this.bookEntityCollection = bookEntityCollection;
+    }
+
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
@@ -102,15 +112,5 @@ public class AuthorEntity implements Serializable{
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         result = 31 * result + (fio != null ? fio.hashCode() : 0);
         return result;
-    }
-
-    @Transient
-    @OneToMany(mappedBy = "authorByAuthorId", fetch = FetchType.LAZY)
-    public Collection<BookAuthorEntity> getBookAuthorsById() {
-        return bookAuthorsById;
-    }
-
-    public void setBookAuthorsById(Collection<BookAuthorEntity> bookAuthorsById) {
-        this.bookAuthorsById = bookAuthorsById;
     }
 }

@@ -5,13 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.vladigeras.model.AuthorEntity;
 import org.vladigeras.util.ValidationPatterns;
 import org.vladigeras.util.ValueValidator;
-import org.vladigeras.model.AuthorEntity;
 import org.vladigeras.service.AuthorService;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping(value = "/authors")
@@ -19,8 +18,6 @@ public class AuthorController {
 
     @Autowired
     private AuthorService authorService;
-
-    private static final Pattern authorPattern = Pattern.compile(ValidationPatterns.AUTHOR_PATTERN);
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<AuthorEntity> getAllAuthors() {
@@ -39,7 +36,7 @@ public class AuthorController {
         params.add(middlename);
         params.add(lastname);
 
-        if (ValueValidator.isValidValueOnPattern(params, authorPattern)){
+        if (ValueValidator.isValidValueOnPattern(params, ValidationPatterns.AUTHOR_PATTERN)){
             String fio = generateAuthorFio(firstname, middlename, lastname);
             AuthorEntity author = new AuthorEntity(firstname, middlename, lastname, fio);
             return authorService.save(author);
@@ -61,7 +58,7 @@ public class AuthorController {
         params.add(firstname);
         params.add(middlename);
         params.add(lastname);
-        if (ValueValidator.isValidValueOnPattern(params, authorPattern) && ValueValidator.isValidId(id)){
+        if (ValueValidator.isValidValueOnPattern(params, ValidationPatterns.AUTHOR_PATTERN) && ValueValidator.isValidId(id)){
             String fio = generateAuthorFio(firstname, middlename, lastname);
             AuthorEntity author = new AuthorEntity(firstname, middlename, lastname, fio);
             author.setId(id);

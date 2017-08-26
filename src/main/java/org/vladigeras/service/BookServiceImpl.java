@@ -2,8 +2,12 @@ package org.vladigeras.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import org.vladigeras.dao.BookDAO;
 import org.vladigeras.model.BookEntity;
+
+import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -16,11 +20,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
         return bookDAO.delete(id);
     }
 
+    @Override
+    @Transactional
+    public List search(String title, String author, String genre) {
+        return bookDAO.search(title, author, genre);
+    }
+
+    @Override
+    @Transactional
+    public BookEntity getBookById(Long id) {
+        return bookDAO.getBookById(id);
+    }
+
 //    @Override
+//    @Transactional
 //    public boolean save(BookEntity book) {
 //        return bookDAO.save(book);
 //    }

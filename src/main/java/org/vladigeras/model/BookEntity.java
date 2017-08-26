@@ -1,18 +1,14 @@
 package org.vladigeras.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
 @Entity
 @Table(name = "Book", schema = "OnlineLibrary")
-public class BookEntity implements Serializable{
-
-    private static final long serialVersionUID = 2172630279431039165L;
-
+public class BookEntity {
     private long id;
     private String title;
     private Integer year;
@@ -23,11 +19,10 @@ public class BookEntity implements Serializable{
     private byte[] image;
     private byte[] content;
     private String description;
-    private Collection<BookAuthorEntity> bookAuthorsById;
-    private Collection<BookGenreEntity> bookGenresById;
+    private Collection<AuthorEntity> authorEntityCollection;
+    private Collection<GenreEntity> genreEntityCollection;
 
     public BookEntity() {
-
     }
 
     public BookEntity(String title, Integer year, Integer pages, String publisher, Double averageRating, String isbn, byte[] image, byte[] content, String description) {
@@ -43,7 +38,6 @@ public class BookEntity implements Serializable{
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     public long getId() {
         return id;
@@ -123,7 +117,7 @@ public class BookEntity implements Serializable{
         this.image = image;
     }
 
-    @Basic
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "content")
     public byte[] getContent() {
         return content;
@@ -141,6 +135,32 @@ public class BookEntity implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "Book_Author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    public Collection<AuthorEntity> getAuthorEntityCollection() {
+        return authorEntityCollection;
+    }
+
+    public void setAuthorEntityCollection(Collection<AuthorEntity> authorEntityCollection) {
+        this.authorEntityCollection = authorEntityCollection;
+    }
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "Book_Genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    public Collection<GenreEntity> getGenreEntityCollection() {
+        return genreEntityCollection;
+    }
+
+    public void setGenreEntityCollection(Collection<GenreEntity> genreEntityCollection) {
+        this.genreEntityCollection = genreEntityCollection;
     }
 
     @Override
@@ -178,27 +198,5 @@ public class BookEntity implements Serializable{
         result = 31 * result + Arrays.hashCode(content);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
-    }
-
-    @JsonIgnore
-    @Transient
-    @OneToMany(mappedBy = "bookByBookId", fetch = FetchType.LAZY)
-    public Collection<BookAuthorEntity> getBookAuthorsById() {
-        return bookAuthorsById;
-    }
-
-    public void setBookAuthorsById(Collection<BookAuthorEntity> bookAuthorsById) {
-        this.bookAuthorsById = bookAuthorsById;
-    }
-
-    @JsonIgnore
-    @Transient
-    @OneToMany(mappedBy = "bookByBookId", fetch = FetchType.LAZY)
-    public Collection<BookGenreEntity> getBookGenresById() {
-        return bookGenresById;
-    }
-
-    public void setBookGenresById(Collection<BookGenreEntity> bookGenresById) {
-        this.bookGenresById = bookGenresById;
     }
 }

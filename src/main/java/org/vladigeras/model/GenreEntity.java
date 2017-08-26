@@ -1,21 +1,18 @@
 package org.vladigeras.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
 @Table(name = "Genre", schema = "OnlineLibrary")
-public class GenreEntity implements Serializable{
-
-    private static final long serialVersionUID = 554804983820894327L;
-
+public class GenreEntity {
     private long id;
     private String title;
-    private Collection<BookGenreEntity> bookGenresById;
+    private Collection<BookEntity> bookEntityCollection;
 
     public GenreEntity() {
-
     }
 
     public GenreEntity(String title) {
@@ -23,7 +20,6 @@ public class GenreEntity implements Serializable{
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     public long getId() {
         return id;
@@ -56,20 +52,23 @@ public class GenreEntity implements Serializable{
         return true;
     }
 
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "Book_Genre",
+            joinColumns = @JoinColumn(name = "genre_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    public Collection<BookEntity> getBookEntityCollection() {
+        return bookEntityCollection;
+    }
+
+    public void setBookEntityCollection(Collection<BookEntity> bookEntityCollection) {
+        this.bookEntityCollection = bookEntityCollection;
+    }
+
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
-    }
-
-    @Transient
-    @OneToMany(mappedBy = "genreByGenreId", fetch = FetchType.LAZY)
-    public Collection<BookGenreEntity> getBookGenresById() {
-        return bookGenresById;
-    }
-
-    public void setBookGenresById(Collection<BookGenreEntity> bookGenresById) {
-        this.bookGenresById = bookGenresById;
     }
 }

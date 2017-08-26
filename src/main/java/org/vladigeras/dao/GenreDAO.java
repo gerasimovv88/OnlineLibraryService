@@ -1,6 +1,7 @@
 package org.vladigeras.dao;
 
 import org.vladigeras.model.GenreEntity;
+
 import java.util.List;
 
 public interface GenreDAO {

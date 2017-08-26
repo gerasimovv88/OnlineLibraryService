@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.vladigeras.dao.GenreDAO;
 import org.vladigeras.model.GenreEntity;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -18,23 +19,25 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional
     public List<GenreEntity> getAllGenres() {
-        List<GenreEntity> result;
-        result = genreDAO.getAllGenres();
-        return result;
+        return genreDAO.getAllGenres();
     }
 
     @Override
+    @Transactional
     public boolean save(String title) {
         return genreDAO.save(title);
     }
 
     @Override
+    @Transactional
     public boolean delete(String title) {
         return genreDAO.delete(title);
     }
 
     @Override
+    @Transactional
     public boolean update(String oldTitle, String newTitle) {
         return genreDAO.update(oldTitle, newTitle);
     }
