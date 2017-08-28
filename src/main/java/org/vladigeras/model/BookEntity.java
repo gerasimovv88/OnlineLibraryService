@@ -3,12 +3,14 @@ package org.vladigeras.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
 @Entity
 @Table(name = "Book", schema = "OnlineLibrary")
-public class BookEntity {
+public class BookEntity implements Serializable {
+    private static final long serialVersionUID = -833652035517302693L;
     private long id;
     private String title;
     private Integer year;
@@ -117,7 +119,8 @@ public class BookEntity {
         this.image = image;
     }
 
-    @Basic(fetch = FetchType.LAZY)
+    @Transient
+    @JsonIgnore
     @Column(name = "content")
     public byte[] getContent() {
         return content;

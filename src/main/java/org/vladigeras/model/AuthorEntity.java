@@ -3,11 +3,13 @@ package org.vladigeras.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
 @Table(name = "Author", schema = "OnlineLibrary")
-public class AuthorEntity {
+public class AuthorEntity implements Serializable {
+    private static final long serialVersionUID = -6991209897831052620L;
     private long id;
     private String firstname;
     private String middlename;
