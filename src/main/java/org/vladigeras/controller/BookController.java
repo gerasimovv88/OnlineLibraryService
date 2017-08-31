@@ -7,6 +7,10 @@ import org.vladigeras.service.BookService;
 import org.vladigeras.util.ValidationPatterns;
 import org.vladigeras.util.ValueValidator;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -36,8 +40,29 @@ public class BookController {
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public BookEntity getBookById(@RequestParam(name = "id", required = true) Long id) {
+    public Object getBookById(@RequestParam(name = "id", required = true) Long id) {
         return ValueValidator.isValidId(id) ? bookService.getBookById(id) : null;
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public boolean downloadBookContentAsPdf(HttpServletResponse response,
+                                            @RequestParam(name = "id", required = true) Long id) {
+        boolean successful = false;
+        if (ValueValidator.isValidId(id)) {
+            byte[] content = bookService.getContentById(id);
+            if (content != null) {
+                String contentType = "application/pdf";
+                response.setContentType(contentType);
+                try (BufferedOutputStream fos = new BufferedOutputStream(response.getOutputStream())) {
+                    fos.write(content);
+                    fos.flush();
+                    successful = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return successful;
     }
 
 //    @RequestMapping(value = "/save", method = RequestMethod.POST)

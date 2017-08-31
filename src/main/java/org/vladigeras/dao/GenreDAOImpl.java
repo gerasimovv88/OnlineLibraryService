@@ -24,7 +24,7 @@ public class GenreDAOImpl implements GenreDAO {
 
     @Override
     public List<GenreEntity> getAllGenres() {
-        List<GenreEntity> result = new ArrayList<>();
+        List<GenreEntity> result = null;
 
         Session session = sessionFactory.getCurrentSession();
         try {

@@ -24,7 +24,7 @@ public class AuthorDAOImpl implements AuthorDAO{
 
     @Override
     public List<AuthorEntity> getAllAuthors() {
-        List<AuthorEntity> result = new ArrayList<>();
+        List<AuthorEntity> result = null;
 
         Session session = sessionFactory.getCurrentSession();
         try {

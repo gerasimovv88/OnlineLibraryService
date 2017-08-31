@@ -3,9 +3,7 @@ package org.vladigeras.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.vladigeras.dao.BookDAO;
-import org.vladigeras.model.BookEntity;
 
 import java.util.List;
 
@@ -33,10 +31,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookEntity getBookById(Long id) {
+    public Object getBookById(Long id) {
         return bookDAO.getBookById(id);
     }
 
+    @Override
+    @Transactional
+    public byte[] getContentById(Long id) {
+        return bookDAO.getContentById(id);
+    }
 //    @Override
 //    @Transactional
 //    public boolean save(BookEntity book) {

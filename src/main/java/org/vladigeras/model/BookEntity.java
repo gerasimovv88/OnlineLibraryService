@@ -119,7 +119,6 @@ public class BookEntity implements Serializable {
         this.image = image;
     }
 
-    @Transient
     @JsonIgnore
     @Column(name = "content")
     public byte[] getContent() {

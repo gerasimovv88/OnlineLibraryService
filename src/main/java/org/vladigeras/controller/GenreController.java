@@ -17,8 +17,12 @@ import java.util.List;
 @RequestMapping(value = "/genres")
 public class GenreController {
 
+    private final GenreService genreService;
+
     @Autowired
-    private GenreService genreService;
+    public GenreController(GenreService genreService) {
+        this.genreService = genreService;
+    }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<GenreEntity> getAllGenres() {

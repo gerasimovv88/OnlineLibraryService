@@ -16,8 +16,12 @@ import java.util.*;
 @RequestMapping(value = "/authors")
 public class AuthorController {
 
+    private final AuthorService authorService;
+
     @Autowired
-    private AuthorService authorService;
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<AuthorEntity> getAllAuthors() {
