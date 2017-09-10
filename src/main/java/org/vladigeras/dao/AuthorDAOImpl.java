@@ -9,7 +9,6 @@ import org.vladigeras.model.AuthorEntity;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -32,6 +31,7 @@ public class AuthorDAOImpl implements AuthorDAO{
             CriteriaQuery<AuthorEntity> criteria = builder.createQuery(AuthorEntity.class);
             Root<AuthorEntity> root = criteria.from(AuthorEntity.class);
             criteria.select(root);
+            criteria.orderBy(builder.asc(root.get("fio")));
             result = session.createQuery(criteria).getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();

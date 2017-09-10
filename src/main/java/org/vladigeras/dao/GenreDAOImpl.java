@@ -9,7 +9,6 @@ import org.vladigeras.model.GenreEntity;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -32,6 +31,7 @@ public class GenreDAOImpl implements GenreDAO {
             CriteriaQuery<GenreEntity> criteria = builder.createQuery(GenreEntity.class);
             Root<GenreEntity> root = criteria.from(GenreEntity.class);
             criteria.select(root);
+            criteria.orderBy(builder.asc(root.get("title")));
             result = session.createQuery(criteria).getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
