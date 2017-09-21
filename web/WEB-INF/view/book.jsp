@@ -90,6 +90,8 @@
         function () {
             var image = new Image();
             image.src = "data:image/png;base64," + ${image};
+            image.width = 300;
+            image.height = 400;
             $("#bookImageBlock").append(image)
         }
     )

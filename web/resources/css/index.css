@@ -136,13 +136,6 @@ header #description {
     display: none;
 }
 
-#bookImage {
-    width: 300px;
-    height: 400px;
-    float: left;
-    margin: 9px 9px 9px 9px;
-}
-
 #readButton {
     margin-left: 110px
 }
