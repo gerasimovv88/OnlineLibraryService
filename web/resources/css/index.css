@@ -1,0 +1,150 @@
+#content {
+    width: 1280px;
+    margin: 0 auto 0 auto;
+    display: inline-flex;
+}
+
+#genresBlock {
+    margin-left: 150px;
+}
+
+#authorsBlock {
+    margin-right: 20px;
+}
+
+#authorsTable {
+    border: 4px double #3ac1ff;
+    margin: 0 auto;
+    border-collapse: separate;
+    width: 100%;
+    border-spacing: 7px 11px;
+}
+
+#genresTable {
+    border: 4px double #3ac1ff;
+    margin: 0 auto;
+    border-collapse: separate;
+    width: 100%;
+    border-spacing: 7px 11px;
+}
+
+#centerBlock {
+    margin: 0 auto 0 auto;
+}
+
+#searchElements {
+    display: inline-flex;
+    margin-top: 10px
+}
+
+#searchField {
+    width: 220px;
+}
+
+#searchButton {
+    margin-left: 10px;
+}
+
+footer {
+    margin-top: 10px;
+}
+
+.links:hover {
+    color: #3ac1ff;
+    cursor: pointer;
+}
+
+.genreRow {
+    font-style: italic;
+}
+
+.authorRow {
+    font-style: italic;
+}
+
+caption {
+    font-weight: bolder;
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+.authorText {
+    margin-top: 10px;
+}
+
+.genreText {
+    margin-top: 10px;
+}
+
+#booksTable img:hover {
+    cursor: pointer;
+}
+
+#booksTable img {
+    float: left;
+    margin: 7px 7px 7px 0;
+}
+
+footer {
+    height: 50px;
+    background-color: #e9e9e9;
+}
+
+header {
+    background-color: #e9e9e9;
+    height: 50px;
+}
+
+header #description {
+    vertical-align: middle;
+}
+
+.icons {
+    margin-left: 43px;
+    height: 40px;
+    vertical-align: middle;
+    margin-top: 6px;
+}
+
+.copyright {
+    width: 1280px;
+    height: 50px;
+    text-align: center;
+}
+
+#countBook {
+    text-align: center;
+}
+
+#bookTable {
+    border: 4px double #3ac1ff;
+    margin: 0 auto;
+    width: 100%;
+    border-spacing: 7px 11px;
+}
+
+#booksTable td {
+    border: 3px solid #FFFFFF;
+}
+
+#backButton {
+    margin-left: 596px;
+}
+
+#bookIdHide {
+    display: none;
+}
+
+#bookImage {
+    width: 300px;
+    height: 400px;
+    float: left;
+    margin: 9px 9px 9px 9px;
+}
+
+#readButton {
+    margin-left: 110px
+}
+
+

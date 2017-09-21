@@ -31,8 +31,8 @@ public class BookController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public List searchBooks(@RequestParam(name = "title", required = false) String title,
-                                        @RequestParam(name = "author", required = false) String author,
-                                        @RequestParam(name = "genre", required = false) String genre) {
+                            @RequestParam(name = "author", required = false) String author,
+                            @RequestParam(name = "genre", required = false) String genre) {
         if (!ValueValidator.isValidValueOnPattern(title, ValidationPatterns.TITLE_PATTERN)) title = "";
         if (!ValueValidator.isValidValueOnPattern(author, ValidationPatterns.AUTHOR_PATTERN)) author = "";
         if (!ValueValidator.isValidValueOnPattern(genre, ValidationPatterns.GENRE_PATTERN)) genre = "";
@@ -65,8 +65,4 @@ public class BookController {
         return successful;
     }
 
-//    @RequestMapping(value = "/save", method = RequestMethod.POST)
-//    public boolean save(@RequestBody BookEntity book) {
-//        return bookService.save(book);
-//    }
 }

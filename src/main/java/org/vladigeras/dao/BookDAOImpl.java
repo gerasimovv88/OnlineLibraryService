@@ -1,6 +1,5 @@
 package org.vladigeras.dao;
 
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.vladigeras.model.BookEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -38,22 +38,18 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public List search(String title, String author, String genre) {
-        List result = null;
-
-        Session session = sessionFactory.getCurrentSession();
-        try {
-            Query query = session.createQuery("SELECT DISTINCT book.id, book.title, book.image, book.averageRating, ac.fio, gc.title " +
-                "FROM BookEntity AS book " +
-                "INNER JOIN book.authorEntityCollection AS ac " +
-                "INNER JOIN book.genreEntityCollection AS gc " +
-                "WHERE ((LOWER(book.title) LIKE :bookTitle) OR (LOWER(ac.fio) LIKE :author) OR (LOWER(gc.title) LIKE :genre)) " +
-                    "GROUP BY book.id ORDER BY book.title ASC");
-                query.setParameter("bookTitle", "%" + title.toLowerCase() + "%");
-                query.setParameter("author", "%" + author.toLowerCase() + "%");
-                query.setParameter("genre", "%" + genre.toLowerCase() + "%");
-            result = query.list();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        List result = new ArrayList();
+        if (!title.equals("")) {
+            result = (searchBooksByTitle(title));
+            return result;
+        }
+        if (!author.equals("")) {
+            result = (searchBooksByAuthor(author));
+            return result;
+        }
+        if (!genre.equals("")) {
+            result = (searchBooksByGenre(genre));
+            return result;
         }
         return result;
     }
@@ -64,18 +60,13 @@ public class BookDAOImpl implements BookDAO {
 
         Session session = sessionFactory.getCurrentSession();
         try {
-            Query query = session.createQuery("SELECT DISTINCT book, ac.fio " +
+            Query query = session.createQuery("SELECT book, ac.fio, gc.title " +
                     "FROM BookEntity AS book " +
                     "INNER JOIN book.authorEntityCollection AS ac " +
                     "INNER JOIN book.genreEntityCollection AS gc " +
-                    "WHERE book.id = :bookId");
-            query.setParameter("bookId", id);
-            List results = query.list();
-            if (results != null) {
-                if (results.size() == 1) {
-                    result = results.get(0);
-                }
-            }
+                    "WHERE book.id = :id");
+            query.setParameter("id", id);
+            result = query.list();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -101,4 +92,66 @@ public class BookDAOImpl implements BookDAO {
         return content;
     }
 
+    private List searchBooksByTitle(String title) {
+        List result = null;
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Query query = session.createQuery("SELECT book, ac.fio, gc.title " +
+                    "FROM BookEntity AS book " +
+                    "INNER JOIN book.authorEntityCollection AS ac " +
+                    "INNER JOIN book.genreEntityCollection AS gc " +
+                    "WHERE (LOWER(book.title) LIKE :bookTitle) ORDER BY book.title ASC");
+            query.setParameter("bookTitle", "%" + title + "%");
+            result = query.list();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    private List searchBooksByAuthor(String author) {
+        List result = null;
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Query query = session.createQuery("SELECT book, ac.fio, gc.title " +
+                    "FROM BookEntity AS book " +
+                    "INNER JOIN book.authorEntityCollection AS ac " +
+                    "INNER JOIN book.genreEntityCollection AS gc " +
+                    "WHERE (LOWER(ac.fio) LIKE :author) ORDER BY book.title ASC");
+            query.setParameter("author", "%" + author + "%");
+            result = query.list();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    private List searchBooksByGenre(String genre) {
+        List result = null;
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Query query = session.createQuery("SELECT book, ac.fio, gc.title " +
+                    "FROM BookEntity AS book " +
+                    "INNER JOIN book.authorEntityCollection AS ac " +
+                    "INNER JOIN book.genreEntityCollection AS gc " +
+                    "WHERE (LOWER(gc.title) LIKE :genre) ORDER BY book.title ASC");
+            query.setParameter("genre", "%" + genre + "%");
+            result = query.list();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public BookEntity getBookEntityById(Long id) {
+        BookEntity result = null;
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            result = session.get(BookEntity.class, id);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+            return result;
+    }
 }
